@@ -1,25 +1,62 @@
-import React from 'react';
-import { currentPosition, storePosition } from './constant/data';
+import React, { useState } from 'react';
+import { storePosition } from './constant/data';
 import { useDistance } from './hook/useDistance';
-import { usePosition } from './hook/usePosition';
+import { useGeolocation } from './hook/useGeolocation';
 
 const App = () => {
-  const { latitude, longitude, error } = usePosition();
-  const distance = useDistance(
-    currentPosition.latitude,
-    currentPosition.longitude,
+  const {
+    loading,
+    error,
+    data: { latitude, longitude },
+    id,
+  } = useGeolocation();
+  //const [distance, setDistance] = useState(null);
+
+  const { message, distanceId } = useDistance(
+    latitude,
+    longitude,
     storePosition.latitude,
     storePosition.longitude
   );
-  console.log(distance);
+
+  // useEffect(() => {
+  //   if (!latitude || !longitude)
+  //     return setDistance('latitude or longitude is null');
+  //   setDistance(
+  //     measureDistance(
+  //       latitude,
+  //       longitude,
+  //       storePosition.latitude,
+  //       storePosition.longitude
+  //     )
+  //   );
+  //   const interval = setInterval(() => {
+  //     setDistance(
+  //       measureDistance(
+  //         latitude,
+  //         longitude,
+  //         storePosition.latitude,
+  //         storePosition.longitude
+  //       )
+  //     );
+  //   }, 5000);
+  //   return () => clearInterval(interval);
+  // }, [latitude, longitude, distance]);
+
   return (
     <div>
-      latitude: {latitude}
-      <br />
-      longitude: {longitude}
-      <br />
-      error: {error}
-      <p>Distance</p>
+      <div>Loading: {loading.toString()}</div>
+      <div>Error: {error?.message}</div>
+      <div>
+        {latitude} x {longitude}
+      </div>
+      <div>Id: {id}</div>
+      {/* <p>Distance</p> */}
+      {/* {distance && <p>{distance}</p>} */}
+      <>
+        message<span>{message && message + ' '}</span> distanceId{' '}
+        <span>{distanceId && distanceId}</span>
+      </>
     </div>
   );
 };
