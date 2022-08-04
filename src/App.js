@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { storePosition } from './constant/data';
 import { useDistance } from './hook/useDistance';
 import { useGeolocation } from './hook/useGeolocation';
